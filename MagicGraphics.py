@@ -168,10 +168,6 @@ def draw_line(points, color):
     my_turtle.goto(points[2], points[3])
 
 
-def edit_triangle():
-    print("edit_triangle")
-
-
 def new():
     my_turtle.clear()
 
