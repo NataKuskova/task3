@@ -134,7 +134,7 @@ def dot(*args):
 
 
 def draw_dot(x, y, size, color):
-    my_turtle.fillcolor('#cdc9c9')
+    my_turtle.fillcolor(color)
     my_turtle.pencolor(color)
     my_turtle.up()
     my_turtle.goto(x, y)
@@ -173,7 +173,8 @@ def new():
 
 
 def save(figures):
-    file_name = input("Enter the file name: ")
+    file_name = input("Enter the file name without the extension: ")
+    quit_(file_name)
     with open(file_name+'.json', 'w', encoding='utf-8') as f:
         json.dump(figures, f)
         f.close()
@@ -182,7 +183,8 @@ def save(figures):
 
 def open_():
     my_turtle.clear()
-    file_name = input("Enter the file name: ")
+    file_name = input("Enter the file name without extension: ")
+    quit_(file_name)
     exists = os.path.exists(file_name+'.json')
     if exists:
         with open(file_name+'.json', 'r', encoding='utf-8') as f:
@@ -192,15 +194,25 @@ def open_():
 
 
 def edit():
-    figure_name = input("Figure name: ")
-    figure_name()
+    list_of_figures()
+    figure_number = int(input("Enter the number of the figure you want to "
+                              "edit: "))
+    quit_(figure_number)
+    for figure_name in FIGURES[figure_number]:
+        param = FUNCTIONS[figure_name]()
+        value = {figure_name: param}
+        FIGURES.pop(figure_number)
+        FIGURES.insert(figure_number, value)
 
 
 def list_of_figures():
     print("List of figures: ")
+    number = 0
     for f in FIGURES:
         for figure_name in f:
-            print("    " + figure_name)
+            print("    " + str(number) + ": " + figure_name + "(" +
+                  str(f[figure_name]) + ")")
+            number += 1
 
 
 def quit_(value):
@@ -249,13 +261,15 @@ if __name__ == "__main__":
                     print('No such file.')
             elif function_name == 'edit':
                 edit()
+                my_turtle.clear()
+                for i in FIGURES:
+                    for figure in i:
+                        FUNCTIONS[figure](i[figure])
             elif function_name == 'list':
                 list_of_figures()
         elif function_name == 'quit':
             quit()
         else:
             print("Incorrect function.")
-
-    # my_win.exitonclick()
 
     # turtle.done()
